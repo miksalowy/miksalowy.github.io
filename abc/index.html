@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Generator Dokumentu</title>
+</head>
+<body>
+  <h1>Prosty Generator</h1>
+
+  <label>Imię: <input type="text" id="firstName"></label><br><br>
+  <label>Nazwisko: <input type="text" id="lastName"></label><br><br>
+  <label>Data urodzenia: <input type="date" id="birthDate"></label><br><br>
+  <label>PESEL: <input type="text" id="pesel"></label><br><br>
+  <label>Zdjęcie: <input type="file" id="photoInput" accept="image/*"></label><br><br>
+
+  <button onclick="saveAndRedirect()">Generuj</button>
+
+  <script>
+    function saveAndRedirect() {
+      const firstName = document.getElementById("firstName").value;
+      const lastName = document.getElementById("lastName").value;
+      const birthDate = document.getElementById("birthDate").value;
+      const pesel = document.getElementById("pesel").value;
+      const photoInput = document.getElementById("photoInput");
+
+      // Zapisujemy dane tekstowe do sessionStorage
+      sessionStorage.setItem("firstName", firstName);
+      sessionStorage.setItem("lastName", lastName);
+      sessionStorage.setItem("birthDate", birthDate);
+      sessionStorage.setItem("pesel", pesel);
+
+      // Obsługa zdjęcia
+      if (photoInput.files && photoInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          sessionStorage.setItem("photo", e.target.result);
+          window.location.href = "podglad.html"; // Przekierowanie po załadowaniu zdjęcia
+        };
+        reader.readAsDataURL(photoInput.files[0]);
+      } else {
+        // Jeśli nie wybrano zdjęcia, przekieruj od razu
+        window.location.href = "podglad.html";
+      }
+    }
+  </script>
+</body>
+</html>
